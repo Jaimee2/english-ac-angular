@@ -8,10 +8,9 @@ import {RouterOutlet} from '@angular/router';
   imports: [CommonModule, RouterOutlet],
   template: `
     <router-outlet></router-outlet>
-    {{ title }}
+    <button class="btn btn-danger"> button </button>
   `,
   styles: [``]
 })
 export class AppComponent {
-  title = 'englishAcademy';
 }
