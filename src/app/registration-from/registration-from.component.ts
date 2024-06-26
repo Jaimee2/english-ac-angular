@@ -12,64 +12,64 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     JsonPipe
   ],
   template: `
-    <form (ngSubmit)="onSubmit()" [formGroup]="registrationForm">
-      <div>
-        <label for="firstName">First Name:</label>
-        <input formControlName="firstName" id="firstName" type="text">
-      </div>
-      <div>
-        <label for="lastName">Last Name:</label>
-        <input formControlName="lastName" id="lastName" type="text">
-      </div>
-      <div>
-        <label for="address">Address:</label>
-        <input formControlName="address" id="address" type="text">
-      </div>
-      <div>
-        <label for="parentPhone">Parent Phone:</label>
-        <input formControlName="parentPhone" id="parentPhone" type="tel">
-      </div>
-      <div>
-        <label for="parentEmail">Parent Email:</label>
-        <input formControlName="parentEmail" id="parentEmail" type="email">
-      </div>
-      <div>
-        <label for="siblings">Siblings at the Center:</label>
-        <input formControlName="siblings" id="siblings" type="text">
-      </div>
-      <div>
-        <label for="notes">Notes (Conservatory, Football, etc.):</label>
-        <input formControlName="notes" id="notes" type="text">
-      </div>
-      <div>
-        <label for="books">Books:</label>
-        <select formControlName="books" id="books">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-      </div>
-      <div>
-        <label for="payment">Payment:</label>
-        <select formControlName="payment" id="payment">
-          <option value="cash">Cash</option>
-          <option value="transfer">Transfer</option>
-          <option value="button">Button</option>
-          <option value="computer">Computer</option>
-        </select>
-      </div>
-      <div>
-        <label for="studentStatus">Is the Student New or Old?:</label>
-        <select formControlName="studentStatus" id="studentStatus">
-          <option value="new">New</option>
-          <option value="old">Old</option>
-        </select>
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <div class="container mt-5">
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name:</label>
+          <input type="text" id="firstName" formControlName="firstName" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name:</label>
+          <input type="text" id="lastName" formControlName="lastName" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">Address:</label>
+          <input type="text" id="address" formControlName="address" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="parentPhone" class="form-label">Parent Phone:</label>
+          <input type="tel" id="parentPhone" formControlName="parentPhone" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="parentEmail" class="form-label">Parent Email:</label>
+          <input type="email" id="parentEmail" formControlName="parentEmail" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="siblings" class="form-label">Siblings at the Center:</label>
+          <input type="text" id="siblings" formControlName="siblings" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="notes" class="form-label">Notes (Conservatory, Football, etc.):</label>
+          <input type="text" id="notes" formControlName="notes" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="books" class="form-label">Books:</label>
+          <select id="books" formControlName="books" class="form-select">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="payment" class="form-label">Payment:</label>
+          <select id="payment" formControlName="payment" class="form-select">
+            <option value="cash">Cash</option>
+            <option value="transfer">Card</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="studentStatus" class="form-label">Is the Student New or Old?:</label>
+          <select id="studentStatus" formControlName="studentStatus" class="form-select">
+            <option value="new">New</option>
+            <option value="old">Old</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
     <br>
     {{ registrationForm.value | json }}
 
-    <button class="btn btn-danger"> button </button>
   `,
   styles: ``
 })
