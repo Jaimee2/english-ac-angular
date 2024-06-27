@@ -2,6 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommonModule, JsonPipe} from "@angular/common";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {RegistrationService} from "./registration.service";
 
 @Component({
   selector: 'app-registration-from',
@@ -118,20 +119,26 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
   `,
   styles: ``
 })
+
 export class RegistrationFromComponent implements OnInit {
   submitted = false;
   // @ts-ignore
   protected registrationForm: FormGroup;
   private fb = inject(FormBuilder);
+  private registrationService = inject(RegistrationService);
+
+  get f() {
+    return this.registrationForm.controls;
+  }
 
   ngOnInit(): void {
     this.registrationForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      address: ['', Validators.required],
-      parentPhone: ['', Validators.required],
-      parentEmail: ['', [Validators.required, Validators.email]],
-      siblings: [''],
+      firstName: ['Jaime', Validators.required],
+      lastName: ['Higueras', Validators.required],
+      address: ['Plaza de ', Validators.required],
+      parentPhone: ['5989899', Validators.required],
+      parentEmail: ['jaime@Gmail.com', [Validators.required, Validators.email]],
+      siblings: ['No'],
       notes: [''],
       books: ['yes', Validators.required],
       payment: ['cash', Validators.required],
@@ -139,15 +146,20 @@ export class RegistrationFromComponent implements OnInit {
     });
   }
 
-  get f() {
-    return this.registrationForm.controls;
-  }
-
   onSubmit(): void {
     this.submitted = true;
     if (this.registrationForm.invalid) {
       return;
     }
-    console.log(this.registrationForm.value);
+
+    this.registrationService.register(this.registrationForm.value).subscribe({
+      next: (response) => {
+        console.log('Registration successful', response);
+      },
+      error: (error) => {
+        console.error('There was an error during the registration!', error);
+      }
+    });
   }
+
 }
