@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommonModule, JsonPipe} from "@angular/common";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import {RegistrationService} from "./registration.service";
+import {StudentsService} from "../students.service";
 
 @Component({
   selector: 'app-registration-from',
@@ -125,7 +125,7 @@ export class RegistrationFromComponent implements OnInit {
   // @ts-ignore
   protected registrationForm: FormGroup;
   private fb = inject(FormBuilder);
-  private registrationService = inject(RegistrationService);
+  private registrationService = inject(StudentsService);
 
   get f() {
     return this.registrationForm.controls;

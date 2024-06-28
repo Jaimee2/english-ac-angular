@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
-import {RegistrationFromComponent} from "./registration-from/registration-from.component";
+import {RegistrationFromComponent} from "./student/registration-from/registration-from.component";
+import {StudentListComponent} from "./student/student-list/student-list.component";
 
 export const routes: Routes = [
   {
@@ -7,7 +8,11 @@ export const routes: Routes = [
     component: RegistrationFromComponent
   },
   {
+    path: 'students',
+    component: StudentListComponent
+  },
+  {
     path: '**',
-    component: RegistrationFromComponent
+    redirectTo: 'registration'
   }
 ];
