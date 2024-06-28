@@ -3,16 +3,13 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {CommonModule, JsonPipe} from "@angular/common";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {StudentsService} from "../students.service";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-registration-from',
   standalone: true,
-  imports: [
-    NgbModule,
-    ReactiveFormsModule,
-    JsonPipe,
-    CommonModule
-  ],
+  imports: [NgbModule, ReactiveFormsModule, JsonPipe, CommonModule],
   template: `
     <div class="container mt-5">
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
@@ -126,6 +123,8 @@ export class RegistrationFromComponent implements OnInit {
   protected registrationForm: FormGroup;
   private fb = inject(FormBuilder);
   private registrationService = inject(StudentsService);
+  private router = inject(Router);
+  private _snackBar = inject(MatSnackBar);
 
   get f() {
     return this.registrationForm.controls;
@@ -148,18 +147,29 @@ export class RegistrationFromComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-    if (this.registrationForm.invalid) {
-      return;
-    }
+    if (this.registrationForm.invalid) return;
 
     this.registrationService.register(this.registrationForm.value).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
+
+        this._snackBar.open("Registration successful :)", "close", {
+          duration: 1000,
+          horizontalPosition: 'left',
+          verticalPosition: 'top',
+        });
+        this.router.navigateByUrl('/home');
       },
       error: (error) => {
+        this._snackBar.open("Something was wrong! ", "close", {
+          duration: 1000,
+          horizontalPosition: "start",
+          verticalPosition: 'bottom',
+        });
         console.error('There was an error during the registration!', error);
       }
     });
+
   }
 
 }
