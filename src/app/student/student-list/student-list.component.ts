@@ -70,7 +70,7 @@ import {ConfirmDialogComponent} from "../../share/confirm-dialog/confirm-dialog.
   `,
   styles: [`
     @media (max-width: 900px) {
-      .mat-column-siblings, .mat-column-parentEmail {
+      .mat-column-siblings, .mat-column-parentEmail, .mat-column-studentStatus {
         display: none;
       }
     }
