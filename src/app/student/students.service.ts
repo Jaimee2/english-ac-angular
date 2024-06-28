@@ -22,4 +22,9 @@ export class StudentsService {
     return this.http.get(this.apiUrl + '/students', {headers});
   }
 
+  deleteStudent(id: number): Observable<any> {
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.http.delete(`${this.apiUrl}/students/${id}`, {headers});
+  }
+
 }

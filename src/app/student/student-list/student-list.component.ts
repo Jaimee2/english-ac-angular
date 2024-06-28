@@ -83,11 +83,14 @@ export class StudentListComponent implements OnInit {
     this.studentService.getAllStudents().subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.studentData = data;
+      console.log(data)
     });
   }
 
   deleteStudent(id: number): void {
-
+    this.studentService.deleteStudent(id).subscribe(() => {
+      this.dataSource.data = this.dataSource.data.filter((student: any) => student.id !== id);
+    });
   }
 
 }
