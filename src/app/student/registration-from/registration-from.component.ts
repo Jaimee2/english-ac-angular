@@ -155,8 +155,8 @@ export class RegistrationFromComponent implements OnInit {
 
         this._snackBar.open("Registration successful :)", "close", {
           duration: 1000,
-          horizontalPosition: 'left',
-          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
         });
         this.router.navigateByUrl('/home');
       },
