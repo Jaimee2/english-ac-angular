@@ -7,6 +7,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatButtonModule} from "@angular/material/button";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../../share/confirm-dialog/confirm-dialog.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-student-list',
@@ -63,7 +64,7 @@ import {ConfirmDialogComponent} from "../../share/confirm-dialog/confirm-dialog.
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)"></mat-row>
       </mat-table>
     </div>
 
@@ -78,13 +79,14 @@ import {ConfirmDialogComponent} from "../../share/confirm-dialog/confirm-dialog.
   `]
 })
 export class StudentListComponent implements OnInit {
-  displayedColumns = ['firstName', 'lastName', 'parentPhone', 'parentEmail', 'siblings', 'payment', 'studentStatus', 'actions'];
+  displayedColumns = ['firstName', 'lastName', 'parentPhone', 'parentEmail',
+    'siblings', 'payment', 'studentStatus', 'actions'];
 
-  // @ts-ignore
-  dataSource: MatTableDataSource<any>;
+  dataSource!: MatTableDataSource<any>;
   protected studentData: any;
   private studentService = inject(StudentsService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.studentService.getAllStudents().subscribe(data => {
@@ -107,6 +109,10 @@ export class StudentListComponent implements OnInit {
     this.studentService.deleteStudent(id).subscribe(() => {
       this.dataSource.data = this.dataSource.data.filter((student: any) => student.id !== id);
     });
+  }
+
+  onRowClicked(row: any) {
+    this.router.navigate(['/students', row.id]);
   }
 
 }
