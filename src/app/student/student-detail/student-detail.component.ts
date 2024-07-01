@@ -3,8 +3,6 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {ActivatedRoute} from "@angular/router";
 import {MatInput} from "@angular/material/input";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
-import {NgOptimizedImage} from "@angular/common";
-import {MatToolbar} from "@angular/material/toolbar";
 
 @Component({
   selector: 'app-student-detail',
@@ -17,8 +15,6 @@ import {MatToolbar} from "@angular/material/toolbar";
     MatCardHeader,
     MatCardContent,
     MatCardTitle,
-    NgOptimizedImage,
-    MatToolbar
   ],
   template: `
 
