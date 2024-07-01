@@ -26,7 +26,7 @@ import {MatToolbar} from "@angular/material/toolbar";
 
       <div class="row">
         <div class="col-md-4 text-center">
-          <img alt="Student Image" class="img-fluid rounded mb-3" src="assets/student.png">
+          <img alt="Student Image" class="img-fluid rounded mb-3" src="assets/student.jpg">
           <div class="class-schedule mt-3">
             <h1>Class: {{ student.studentClass }}</h1>
             <h2>Schedule: {{ student.schedule }}</h2>
