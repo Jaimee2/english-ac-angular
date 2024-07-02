@@ -3,6 +3,8 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {ActivatedRoute} from "@angular/router";
 import {MatInput} from "@angular/material/input";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {StudentsService} from "../students.service";
+import {dateComparator} from "@ng-bootstrap/ng-bootstrap/datepicker/datepicker-tools";
 
 @Component({
   selector: 'app-student-detail',
@@ -116,26 +118,32 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/mat
 })
 export class StudentDetailComponent implements OnInit {
   route = inject(ActivatedRoute);
+  studentService = inject(StudentsService);
+
   studentId!: string;
   student!: any;
 
   ngOnInit(): void {
     this.studentId = this.route.snapshot.paramMap.get('id')!;
-
-    this.student = {
-      id: '1',
-      firstName: 'Jaime',
-      lastName: 'Higueras',
-      parentPhone: '5989899',
-      parentEmail: 'jaime@Gmail.com',
-      siblings: 'No',
-      payment: 'cash',
-      studentStatus: 'new',
-      imageUrl: '',
-      studentClass: 'A2', // Example class
-      schedule: 'Mon-Fri 8:00am - 3:00pm' // Example schedule
-    };
+    this.studentService.getStudentDetail(this.studentId).subscribe(data => {
+      this.student = data;
+    });
+    // this.student = {
+    //   id: '1',
+    //   firstName: 'Jaime',
+    //   lastName: 'Higueras',
+    //   parentPhone: '5989899',
+    //   parentEmail: 'jaime@Gmail.com',
+    //   siblings: 'No',
+    //   payment: 'cash',
+    //   studentStatus: 'new',
+    //   imageUrl: '',
+    //   studentClass: 'A2', // Example class
+    //   schedule: 'Mon-Fri 8:00am - 3:00pm' // Example schedule
+    // };
   }
+
+
 
 
 }

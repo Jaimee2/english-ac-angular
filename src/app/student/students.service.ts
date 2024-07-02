@@ -22,9 +22,15 @@ export class StudentsService {
     return this.http.get(this.apiUrl + '/students', {headers});
   }
 
+  //TODO wtf int ?
   deleteStudent(id: number): Observable<any> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
     return this.http.delete(`${this.apiUrl}/students/${id}`, {headers});
+  }
+
+  getStudentDetail(id: string): Observable<any> {
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.http.get(`${this.apiUrl}/students/${id}`, {headers});
   }
 
 }
