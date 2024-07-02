@@ -137,7 +137,6 @@ export class StudentDetailComponent implements OnInit {
     //   schedule: 'Mon-Fri 8:00am - 3:00pm'
   }
 
-
   goBack() {
     this._location.back();
   }
