@@ -7,11 +7,12 @@ import {StudentsService} from "../students.service";
 import {Location} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
+import {LoadingSpinnerComponent} from "../../share/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-student-detail',
   standalone: true,
-  imports: [MatFormField, MatInput, MatLabel, MatCard, MatCardHeader, MatCardContent, MatCardTitle, MatIcon, MatIconButton,],
+  imports: [MatFormField, MatInput, MatLabel, MatCard, MatCardHeader, MatCardContent, MatCardTitle, MatIcon, MatIconButton, LoadingSpinnerComponent],
   template: `
 
     <div class="container mt-4">
@@ -24,69 +25,75 @@ import {MatIconButton} from "@angular/material/button";
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-4 text-center">
-          <img alt="Student Image" class="img-fluid rounded mb-3" src="assets/student.jpg">
-          <div class="class-schedule mt-3">
-            <h1>Class: {{ student.studentClass }}</h1>
-            <h2>Schedule: {{ student.schedule }}</h2>
+      @if (!isLoaded){
+
+        <app-loading-spinner></app-loading-spinner>
+
+      } @else {
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <img alt="Student Image" class="img-fluid rounded mb-3" src="assets/student.jpg">
+            <div class="class-schedule mt-3">
+              <h1>Class: {{ student.studentClass }}</h1>
+              <h2>Schedule: {{ student.schedule }}</h2>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Student Detail</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="mb-3">
+                  <mat-form-field class="w-100">
+                    <mat-label>First Name</mat-label>
+                    <input [value]="student.firstName" matInput readonly>
+                  </mat-form-field>
+                </div>
+                <div class="mb-3">
+                  <mat-form-field class="w-100">
+                    <mat-label>Last Name</mat-label>
+                    <input [value]="student.lastName" matInput readonly>
+                  </mat-form-field>
+                </div>
+                <div class="mb-3">
+                  <mat-form-field class="w-100">
+                    <mat-label>Parent Phone</mat-label>
+                    <input [value]="student.parentPhone" matInput readonly>
+                  </mat-form-field>
+                </div>
+                <div class="mb-3">
+                  <mat-form-field class="w-100">
+                    <mat-label>Parent Email</mat-label>
+                    <input [value]="student.parentEmail" matInput readonly>
+                  </mat-form-field>
+                </div>
+                <div class="mb-3">
+                  <mat-form-field class="w-100">
+                    <mat-label>Siblings</mat-label>
+                    <input [value]="student.siblings" matInput readonly>
+                  </mat-form-field>
+                </div>
+                <div class="mb-3">
+                  <mat-form-field class="w-100">
+                    <mat-label>Payment</mat-label>
+                    <input [value]="student.payment" matInput readonly>
+                  </mat-form-field>
+                </div>
+                <div class="mb-3">
+                  <mat-form-field class="w-100">
+                    <mat-label>Student Status</mat-label>
+                    <input [value]="student.studentStatus" matInput readonly>
+                  </mat-form-field>
+                </div>
+              </mat-card-content>
+            </mat-card>
           </div>
         </div>
+      }
 
-        <div class="col-md-8">
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>Student Detail</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="mb-3">
-                <mat-form-field class="w-100">
-                  <mat-label>First Name</mat-label>
-                  <input [value]="student.firstName" matInput readonly>
-                </mat-form-field>
-              </div>
-              <div class="mb-3">
-                <mat-form-field class="w-100">
-                  <mat-label>Last Name</mat-label>
-                  <input [value]="student.lastName" matInput readonly>
-                </mat-form-field>
-              </div>
-              <div class="mb-3">
-                <mat-form-field class="w-100">
-                  <mat-label>Parent Phone</mat-label>
-                  <input [value]="student.parentPhone" matInput readonly>
-                </mat-form-field>
-              </div>
-              <div class="mb-3">
-                <mat-form-field class="w-100">
-                  <mat-label>Parent Email</mat-label>
-                  <input [value]="student.parentEmail" matInput readonly>
-                </mat-form-field>
-              </div>
-              <div class="mb-3">
-                <mat-form-field class="w-100">
-                  <mat-label>Siblings</mat-label>
-                  <input [value]="student.siblings" matInput readonly>
-                </mat-form-field>
-              </div>
-              <div class="mb-3">
-                <mat-form-field class="w-100">
-                  <mat-label>Payment</mat-label>
-                  <input [value]="student.payment" matInput readonly>
-                </mat-form-field>
-              </div>
-              <div class="mb-3">
-                <mat-form-field class="w-100">
-                  <mat-label>Student Status</mat-label>
-                  <input [value]="student.studentStatus" matInput readonly>
-                </mat-form-field>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </div>
     </div>
-
 
   `,
   styles: [`
@@ -126,12 +133,14 @@ export class StudentDetailComponent implements OnInit {
 
   studentId!: string;
   student!: any;
+  isLoaded = false;
 
   ngOnInit(): void {
     this.studentId = this.route.snapshot.paramMap.get('id')!;
 
     this.studentService.getStudentDetail(this.studentId).subscribe(data => {
       this.student = data;
+      this.isLoaded = true;
     });
     //   studentClass: 'A2', // Example class
     //   schedule: 'Mon-Fri 8:00am - 3:00pm'
