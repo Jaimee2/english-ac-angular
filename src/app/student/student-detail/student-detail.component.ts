@@ -18,14 +18,22 @@ import {LoadingSpinnerComponent} from "../../share/loading-spinner/loading-spinn
     <div class="container mt-4">
 
       <div class="row mb-3">
-        <div class="col-12">
+        <div class="col-3">
           <button (click)="goBack()" mat-icon-button>
             <mat-icon>arrow_back</mat-icon>
           </button>
         </div>
+
+        <div class="col-6" style="border-bottom-style: solid">
+          <div class="text-center mb-4">
+            <h1 class="display-4">Student detail</h1>
+            <p class="lead text-muted">Manage all students' information</p>
+          </div>
+        </div>
+
       </div>
 
-      @if (!isLoaded){
+      @if (!isLoaded) {
 
         <app-loading-spinner></app-loading-spinner>
 
@@ -42,7 +50,7 @@ import {LoadingSpinnerComponent} from "../../share/loading-spinner/loading-spinn
           <div class="col-md-8">
             <mat-card>
               <mat-card-header>
-                <mat-card-title>Student Detail</mat-card-title>
+
               </mat-card-header>
               <mat-card-content>
                 <div class="mb-3">

@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {StudentsService} from '../students.service';
-import {JsonPipe} from "@angular/common";
+import {JsonPipe, Location} from "@angular/common";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
@@ -12,23 +12,33 @@ import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {SearchBoxComponent} from "../../share/search-box/search-box.component";
 import {LoadingSpinnerComponent} from "../../share/loading-spinner/loading-spinner.component";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-student-list',
   standalone: true,
-  imports: [JsonPipe, MatTableModule, MatPaginatorModule, MatSortModule, MatButtonModule, MatFormField, MatInput, SearchBoxComponent, LoadingSpinnerComponent],
+  imports: [JsonPipe, MatTableModule, MatPaginatorModule, MatSortModule, MatButtonModule, MatFormField, MatInput, SearchBoxComponent, LoadingSpinnerComponent, MatIcon],
   template: `
 
     <div class="container mt-4">
 
-      <div class="text-center mb-4">
-        <h1 class="display-4">Student List</h1>
-        <p class="lead text-muted">Manage all students' information in one place</p>
+      <div class="row mb-3">
+        <div class="col-3" >
+          <button (click)="goBack()" mat-icon-button>
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </div>
+        <div class="col-6" style="border-bottom-style: solid" >
+          <div class="text-center mb-4">
+            <h1 class="display-4">Student List</h1>
+            <p class="lead text-muted">Manage all students' information in one place</p>
+          </div>
+        </div>
       </div>
 
       <div class="row mb-4">
-        <app-search-box (onDebounce)="searchByName($event)"
-                        (onValue)="searchByName($event)"
+        <app-search-box (onDebounce)="search($event)"
+                        (onValue)="search($event)"
                         [initialValue]="''"
                         placeholder='Searh by Name'
         >
@@ -111,6 +121,7 @@ export class StudentListComponent implements OnInit {
   private studentService = inject(StudentsService);
   private dialog = inject(MatDialog);
   private router = inject(Router);
+  _location = inject(Location);
 
   ngOnInit(): void {
     this.studentService.getAllStudents().subscribe(data => {
@@ -141,7 +152,12 @@ export class StudentListComponent implements OnInit {
     this.router.navigate(['/students', row.id]);
   }
 
-  searchByName(event: string): void {
-    console.log(event)
+  goBack() {
+    this._location.back();
   }
+
+  search(input: string) {
+    this.dataSource.filter = input.trim().toLowerCase()
+  }
+
 }
