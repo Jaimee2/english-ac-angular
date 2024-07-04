@@ -38,13 +38,20 @@ import {LoadingSpinnerComponent} from "../../share/loading-spinner/loading-spinn
         <app-loading-spinner></app-loading-spinner>
 
       } @else {
+
         <div class="row">
+
           <div class="col-md-4 text-center">
             <img alt="Student Image" class="img-fluid rounded mb-3" src="assets/student.jpg">
-            <div class="class-schedule mt-3">
-              <h1>Class: {{ student.studentClass }}</h1>
-              <h2>Schedule: {{ student.schedule }}</h2>
-            </div>
+
+            @if (student.classRoom) {
+              <div class="class-schedule mt-3">
+                <h1>Class: {{ student.classRoom.className }}</h1>
+                <h2>Schedule: {{ student.classRoom.schedule }}</h2>
+              </div>
+            } @else {
+              Student without class :(
+            }
           </div>
 
           <div class="col-md-8">
