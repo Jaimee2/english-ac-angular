@@ -1,17 +1,36 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {CommonModule, JsonPipe} from "@angular/common";
+import {CommonModule, JsonPipe, Location} from "@angular/common";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {StudentsService} from "../students.service";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatIcon} from "@angular/material/icon";
+import {MatIconButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-registration-from',
   standalone: true,
-  imports: [NgbModule, ReactiveFormsModule, JsonPipe, CommonModule],
+  imports: [NgbModule, ReactiveFormsModule, JsonPipe, CommonModule, MatIcon, MatIconButton],
   template: `
     <div class="container mt-5">
+
+      <div class="row mb-3">
+        <div class="col-3">
+          <button (click)="goBack()" mat-icon-button>
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </div>
+
+        <div class="col-6" style="border-bottom-style: solid">
+          <div class="text-center mb-4">
+            <h1 class="display-4">Student detail</h1>
+            <p class="lead text-muted">Manage all students' information</p>
+          </div>
+        </div>
+
+      </div>
+
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <div class="mb-3 row">
           <label for="firstName" class="col-sm-3 col-form-label">First Name:</label>
@@ -125,7 +144,7 @@ export class RegistrationFromComponent implements OnInit {
   private registrationService = inject(StudentsService);
   private router = inject(Router);
   private _snackBar = inject(MatSnackBar);
-
+  _location = inject(Location);
   get f() {
     return this.registrationForm.controls;
   }
@@ -172,4 +191,7 @@ export class RegistrationFromComponent implements OnInit {
 
   }
 
+  goBack() {
+    this._location.back();
+  }
 }
