@@ -33,4 +33,14 @@ export class StudentsService {
     return this.http.get(`${this.apiUrl}/students/${id}`, {headers});
   }
 
+  addClassRoomToStudent(studentId: string, classRoomId: string): Observable<any> {
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.http.put(`${this.apiUrl}/student/${studentId}/addClass/${classRoomId}`, {headers});
+  }
+
+  getAllClassRooms(): Observable<any> {
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.http.get(this.apiUrl + '/classRooms', {headers});
+  }
+
 }

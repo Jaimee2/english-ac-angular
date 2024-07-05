@@ -6,13 +6,16 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/mat
 import {StudentsService} from "../students.service";
 import {Location} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {LoadingSpinnerComponent} from "../../share/loading-spinner/loading-spinner.component";
+import {ConfirmDialogComponent} from "../../share/confirm-dialog/confirm-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {AddClassDialogComponent} from "./add-class-dialog-component/add-class-dialog.component";
 
 @Component({
   selector: 'app-student-detail',
   standalone: true,
-  imports: [MatFormField, MatInput, MatLabel, MatCard, MatCardHeader, MatCardContent, MatCardTitle, MatIcon, MatIconButton, LoadingSpinnerComponent],
+  imports: [MatFormField, MatInput, MatLabel, MatCard, MatCardHeader, MatCardContent, MatCardTitle, MatIcon, MatIconButton, LoadingSpinnerComponent, MatButton],
   template: `
 
     <div class="container mt-4">
@@ -50,15 +53,17 @@ import {LoadingSpinnerComponent} from "../../share/loading-spinner/loading-spinn
                 <h2>Schedule: {{ student.classRoom.schedule }}</h2>
               </div>
             } @else {
-              Student without class :(
+              <h2>Student without class :(</h2>
+              <button mat-stroked-button color="primary"
+                      (click)="openAddClassDialog()"
+              >
+                Add class to the student
+              </button>
             }
           </div>
 
           <div class="col-md-8">
             <mat-card>
-              <mat-card-header>
-
-              </mat-card-header>
               <mat-card-content>
                 <div class="mb-3">
                   <mat-form-field class="w-100">
@@ -103,6 +108,7 @@ import {LoadingSpinnerComponent} from "../../share/loading-spinner/loading-spinn
                   </mat-form-field>
                 </div>
               </mat-card-content>
+              <button (click)="confirmDelete(student.id)" color="warn" mat-button>Delete</button>
             </mat-card>
           </div>
         </div>
@@ -112,10 +118,6 @@ import {LoadingSpinnerComponent} from "../../share/loading-spinner/loading-spinn
 
   `,
   styles: [`
-    .student-detail {
-      max-width: 800px;
-      margin: auto;
-    }
 
     .img-fluid {
       max-width: 100%;
@@ -145,6 +147,7 @@ export class StudentDetailComponent implements OnInit {
   route = inject(ActivatedRoute);
   studentService = inject(StudentsService);
   _location = inject(Location);
+  dialog = inject(MatDialog);
 
   studentId!: string;
   student!: any;
@@ -164,4 +167,31 @@ export class StudentDetailComponent implements OnInit {
   goBack() {
     this._location.back();
   }
+
+  confirmDelete(id: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.studentService.deleteStudent(id).subscribe(() => {
+        this._location.back();
+      });
+    });
+
+  }
+
+  openAddClassDialog(): void {
+    const dialogRef = this.dialog.open(AddClassDialogComponent, {
+      width: '300px',
+      data: {studentId: this.studentId}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.studentService.addClassRoomToStudent(this.studentId, result.classRoomId).subscribe(() => {
+          this.ngOnInit(); // Reload the student details
+        });
+      }
+    });
+  }
+
 }
