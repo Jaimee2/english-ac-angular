@@ -16,6 +16,8 @@ import {
   MatStepperNext,
   MatStepperPrevious
 } from "@angular/material/stepper";
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {provideNativeDateAdapter} from "@angular/material/core";
 
 @Component({
   selector: 'app-registration-from',
@@ -37,8 +39,12 @@ import {
     MatStep,
     MatStepper,
     MatIcon,
-    MatIconButton
+    MatIconButton,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatDatepicker
   ],
+  providers: [provideNativeDateAdapter()],
   template: `
     <div class="container mt-5">
       <div class="row mb-3">
@@ -55,60 +61,80 @@ import {
         </div>
       </div>
 
-      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-        <mat-horizontal-stepper [linear]="true" #stepper>
+      <form (ngSubmit)="onSubmit()" [formGroup]="registrationForm">
+        <mat-horizontal-stepper #stepper [linear]="true">
           <mat-step [stepControl]="studentDetailsForm">
             <form [formGroup]="studentDetailsForm">
               <ng-template matStepLabel>Student Details</ng-template>
               <div class="mb-3 row">
-                <label for="firstName" class="col-sm-3 col-form-label">First Name:</label>
+                <label class="col-sm-3 col-form-label" for="firstName">First Name:</label>
                 <div class="col-sm-9">
-                  <input matInput type="text" id="firstName" formControlName="firstName" class="form-control"
-                         [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }">
-                  <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
-                    <div *ngIf="f['firstName'].errors?.['required']">First Name is required</div>
-                  </div>
+                  <mat-form-field appearance="fill" class="w-75" class="w-75">
+                    <mat-label>First Name</mat-label>
+                    <input [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }" formControlName="firstName" id="firstName"
+                           matInput>
+                    <mat-error *ngIf="submitted && f['firstName'].errors?.['required']">First Name is required
+                    </mat-error>
+                  </mat-form-field>
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="lastName" class="col-sm-3 col-form-label">Last Name:</label>
+                <label class="col-sm-3 col-form-label" for="lastName">Last Name:</label>
                 <div class="col-sm-9">
-                  <input matInput type="text" id="lastName" formControlName="lastName" class="form-control"
-                         [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }">
-                  <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
-                    <div *ngIf="f['lastName'].errors?.['required']">Last Name is required</div>
-                  </div>
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Last Name</mat-label>
+                    <input [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }" formControlName="lastName" id="lastName"
+                           matInput>
+                    <mat-error *ngIf="submitted && f['lastName'].errors?.['required']">Last Name is required</mat-error>
+                  </mat-form-field>
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="address" class="col-sm-3 col-form-label">Address:</label>
+                <label class="col-sm-3 col-form-label" for="birthday">Birthday:</label>
                 <div class="col-sm-9">
-                  <input matInput type="text" id="address" formControlName="address" class="form-control"
-                         [ngClass]="{ 'is-invalid': submitted && f['address'].errors }">
-                  <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
-                    <div *ngIf="f['address'].errors?.['required']">Address is required</div>
-                  </div>
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Birthday</mat-label>
+                    <input matInput [matDatepicker]="picker" id="birthday" formControlName="birthday">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="submitted && f['birthday'].errors?.['required']">Birthday is required</mat-error>
+                  </mat-form-field>
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="parentPhone" class="col-sm-3 col-form-label">Parent Phone:</label>
+                <label class="col-sm-3 col-form-label" for="address">Address:</label>
                 <div class="col-sm-9">
-                  <input matInput type="tel" id="parentPhone" formControlName="parentPhone" class="form-control"
-                         [ngClass]="{ 'is-invalid': submitted && f['parentPhone'].errors }">
-                  <div *ngIf="submitted && f['parentPhone'].errors" class="invalid-feedback">
-                    <div *ngIf="f['parentPhone'].errors?.['required']">Parent Phone is required</div>
-                  </div>
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Address</mat-label>
+                    <input [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" formControlName="address" id="address"
+                           matInput>
+                    <mat-error *ngIf="submitted && f['address'].errors?.['required']">Address is required</mat-error>
+                  </mat-form-field>
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="parentEmail" class="col-sm-3 col-form-label">Parent Email:</label>
+                <label class="col-sm-3 col-form-label" for="parentPhone">Parent Phone:</label>
                 <div class="col-sm-9">
-                  <input matInput type="email" id="parentEmail" formControlName="parentEmail" class="form-control"
-                         [ngClass]="{ 'is-invalid': submitted && f['parentEmail'].errors }">
-                  <div *ngIf="submitted && f['parentEmail'].errors" class="invalid-feedback">
-                    <div *ngIf="f['parentEmail'].errors?.['required']">Parent Email is required</div>
-                    <div *ngIf="f['parentEmail'].errors?.['email']">Invalid email format</div>
-                  </div>
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Parent Phone</mat-label>
+                    <input [ngClass]="{ 'is-invalid': submitted && f['parentPhone'].errors }" formControlName="parentPhone" id="parentPhone"
+                           matInput>
+                    <mat-error *ngIf="submitted && f['parentPhone'].errors?.['required']">Parent Phone is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label" for="parentEmail">Parent Email:</label>
+                <div class="col-sm-9">
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Parent Email</mat-label>
+                    <input [ngClass]="{ 'is-invalid': submitted && f['parentEmail'].errors }" formControlName="parentEmail" id="parentEmail"
+                           matInput>
+                    <mat-error *ngIf="submitted && f['parentEmail'].errors?.['required']">Parent Email is required
+                    </mat-error>
+                    <mat-error *ngIf="submitted && f['parentEmail'].errors?.['email']">Invalid email format</mat-error>
+                  </mat-form-field>
                 </div>
               </div>
               <div>
@@ -120,44 +146,59 @@ import {
             <form [formGroup]="additionalDetailsForm">
               <ng-template matStepLabel>Additional Details</ng-template>
               <div class="mb-3 row">
-                <label for="siblings" class="col-sm-3 col-form-label">Siblings at the Center:</label>
+                <label class="col-sm-3 col-form-label" for="siblings">Siblings at the Center:</label>
                 <div class="col-sm-9">
-                  <input matInput type="text" id="siblings" formControlName="siblings" class="form-control">
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Siblings at the Center</mat-label>
+                    <input formControlName="siblings" id="siblings" matInput>
+                  </mat-form-field>
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="notes" class="col-sm-3 col-form-label">Notes (Conservatory, Football, etc.):</label>
+                <label class="col-sm-3 col-form-label" for="notes">Notes (Conservatory, Football, etc.):</label>
                 <div class="col-sm-9">
-                  <input matInput type="text" id="notes" formControlName="notes" class="form-control">
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Notes</mat-label>
+                    <input formControlName="notes" id="notes" matInput>
+                  </mat-form-field>
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="books" class="col-sm-3 col-form-label">Books:</label>
+                <label class="col-sm-3 col-form-label" for="books">Books:</label>
                 <div class="col-sm-9">
-                  <select matNativeControl id="books" formControlName="books" class="form-select">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Books</mat-label>
+                    <select formControlName="books" id="books" matNativeControl>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </mat-form-field>
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="payment" class="col-sm-3 col-form-label">Payment:</label>
+                <label class="col-sm-3 col-form-label" for="payment">Payment:</label>
                 <div class="col-sm-9">
-                  <select matNativeControl id="payment" formControlName="payment" class="form-select">
-                    <option value="cash">Cash</option>
-                    <option value="transfer">Transfer</option>
-                    <option value="button">Button</option>
-                    <option value="computer">Computer</option>
-                  </select>
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Payment</mat-label>
+                    <select formControlName="payment" id="payment" matNativeControl>
+                      <option value="cash">Cash</option>
+                      <option value="transfer">Transfer</option>
+                      <option value="button">Button</option>
+                      <option value="computer">Computer</option>
+                    </select>
+                  </mat-form-field>
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="studentStatus" class="col-sm-3 col-form-label">Is the Student New or Old?:</label>
+                <label class="col-sm-3 col-form-label" for="studentStatus">Is the Student New or Old?:</label>
                 <div class="col-sm-9">
-                  <select matNativeControl id="studentStatus" formControlName="studentStatus" class="form-select">
-                    <option value="new">New</option>
-                    <option value="old">Old</option>
-                  </select>
+                  <mat-form-field appearance="fill" class="w-75">
+                    <mat-label>Is the Student New or Old?</mat-label>
+                    <select formControlName="studentStatus" id="studentStatus" matNativeControl>
+                      <option value="new">New</option>
+                      <option value="old">Old</option>
+                    </select>
+                  </mat-form-field>
                 </div>
               </div>
               <div>
@@ -199,11 +240,12 @@ export class RegistrationFromComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentDetailsForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      address: ['', Validators.required],
-      parentPhone: ['', Validators.required],
-      parentEmail: ['', [Validators.required, Validators.email]],
+      firstName: ['Jaime', Validators.required],
+      lastName: ['Higueras', Validators.required],
+      birthday: ['', Validators.required],
+      address: ['C/', Validators.required],
+      parentPhone: ['3453534', Validators.required],
+      parentEmail: ['jaime@gmail.com', [Validators.required, Validators.email]],
     });
 
     this.additionalDetailsForm = this.fb.group({
@@ -211,7 +253,8 @@ export class RegistrationFromComponent implements OnInit {
       notes: [''],
       books: ['', Validators.required],
       payment: ['', Validators.required],
-      studentStatus: ['', Validators.required]
+      studentStatus: ['', Validators.required],
+
     });
 
     this.registrationForm = this.fb.group({
@@ -228,7 +271,7 @@ export class RegistrationFromComponent implements OnInit {
       ...this.studentDetailsForm.value,
       ...this.additionalDetailsForm.value
     };
-
+    this.router.navigateByUrl('/home');
     this.registrationService.register(formData).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
@@ -238,7 +281,6 @@ export class RegistrationFromComponent implements OnInit {
           horizontalPosition: 'right',
           verticalPosition: 'bottom',
         });
-        this.router.navigateByUrl('/home');
       },
       error: (error) => {
         this._snackBar.open("Something was wrong! ", "close", {
